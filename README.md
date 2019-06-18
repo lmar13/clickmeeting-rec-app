@@ -1,2 +1,2 @@
 # clickmeeting-rec-app
-Application written for recruitment process
+An application created for the recruitment process
