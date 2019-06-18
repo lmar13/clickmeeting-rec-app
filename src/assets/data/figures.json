@@ -1,0 +1,41 @@
+[
+  {
+    "type": "circle",
+    "calc": [
+      {
+        "typeId": 1,
+        "exp": "2 * pi *r"
+      },
+      {
+        "typeId": 2,
+        "exp": "pi * r ^ 2"
+      }
+    ]
+  },
+  {
+    "type": "square",
+    "calc": [
+      {
+        "typeId": 1,
+        "exp": "4a"
+      },
+      {
+        "typeId": 2,
+        "exp": "a ^ 2"
+      }
+    ]
+  },
+  {
+    "type": "rectangle",
+    "calc": [
+      {
+        "typeId": 1,
+        "exp": "2a + 2b"
+      },
+      {
+        "typeId": 2,
+        "exp": "a * b"
+      }
+    ]
+  }
+]
