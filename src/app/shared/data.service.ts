@@ -1,41 +1,41 @@
 import { Injectable } from '@angular/core';
-import CalcTypeJson from '../../assets/data/calcType.json';
-import FiguresJson from '../../assets/data/figures.json';
 import { Observable, of } from 'rxjs';
+import DataJson from '../../assets/data/figures.json';
 
 export interface Figure {
-  type: string;
-  calc: [{
-    typeId: number;
-    exp: string;
-  }];
+  figure: string;
+  calc: [
+    {
+      type: string;
+      exp: string;
+    }
+  ];
 }
 
 export interface CalcType {
-  _id: number;
   type: string;
+  exp: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
-  constructor() { }
+  constructor() {}
 
   getAll(): Observable<Figure[]> {
-    return of(FiguresJson as Figure[]);
+    return of(DataJson as Figure[]);
   }
 
   getFigures(): Observable<string[]> {
-    return of(FiguresJson.map(f => f.type));
+    return of(DataJson.map(f => f.figure));
   }
 
   getFigure(figure: string): Observable<Figure> {
-    return of(FiguresJson.find(f => f.type === figure) as Figure);
+    return of(DataJson.find(f => f.figure === figure) as Figure);
   }
 
-  getCalcType(): Observable<CalcType[]> {
-    return of(CalcTypeJson as CalcType[])
+  getCalcTypesForFigure(figure: string): Observable<CalcType[]> {
+    return of(DataJson.find(f => f.figure === figure).calc as CalcType[]);
   }
 }
