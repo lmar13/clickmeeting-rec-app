@@ -13,39 +13,50 @@ export class AppComponent implements OnInit {
   form: FormGroup;
   figures = [] as string[];
   calcType = [] as CalcType[];
+  showCalcType = false;
+  showCalc = false;
 
-  constructor(private dataService: DataService, private fb: FormBuilder, private router: Router) {
-
-  }
+  constructor(
+    private dataService: DataService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.fetchData();
+    this.router.navigate(['']); // reset route after browser refresh
+    this.fetchData(); // fetch initial data
 
+    // build form with 'two' fields
     this.form = this.fb.group({
       figure: ['', Validators.required],
       calcType: ['', Validators.required]
     });
 
-    this.onFormChanges()
+    this.onFormChanges(); // subscribe to form changes
   }
 
   fetchData() {
     this.dataService.getFigures().subscribe(figures => {
       this.figures = figures;
     });
-
-    this.dataService.getCalcType().subscribe(ct => {
-      this.calcType = ct;
-    });
   }
 
   onFormChanges() {
     this.form.valueChanges.subscribe(form => {
-      const {figure, calcType} = form;
+      const { figure, calcType } = form;
 
-      if(figure && calcType) {
+      // fetch data for specified figure to get its own calculation type + show component
+      if (figure) {
+        this.dataService.getCalcTypesForFigure(figure).subscribe(calc => {
+          this.calcType = calc;
+          this.showCalcType = true;
+        });
+      }
+
+      // when user choose two necessary field we can proceed to fetch expresion and calculate it
+      if (figure && calcType) {
         this.router.navigate([figure, calcType]);
       }
-    })
+    });
   }
 }
