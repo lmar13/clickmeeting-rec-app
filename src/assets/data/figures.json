@@ -1,39 +1,39 @@
 [
   {
-    "type": "circle",
+    "figure": "circle",
     "calc": [
       {
-        "typeId": 1,
-        "exp": "2 * pi *r"
+        "type": "circiut",
+        "exp": "(2 * pi * r)"
       },
       {
-        "typeId": 2,
+        "type": "field",
         "exp": "pi * r ^ 2"
       }
     ]
   },
   {
-    "type": "square",
+    "figure": "square",
     "calc": [
       {
-        "typeId": 1,
-        "exp": "4a"
+        "type": "circiut",
+        "exp": "4 * a"
       },
       {
-        "typeId": 2,
+        "type": "field",
         "exp": "a ^ 2"
       }
     ]
   },
   {
-    "type": "rectangle",
+    "figure": "rectangle",
     "calc": [
       {
-        "typeId": 1,
-        "exp": "2a + 2b"
+        "type": "circiut",
+        "exp": "2*a + 2*b"
       },
       {
-        "typeId": 2,
+        "type": "field",
         "exp": "a * b"
       }
     ]
