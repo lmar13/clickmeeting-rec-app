@@ -48,25 +48,6 @@ export class CalcComponent implements OnInit {
   }
 
   examineExp(exp: string) {
-    // Regular Expression to eliminate any math operators, brackets, numbers to extract only variables
-    // const mathOperator = new RegExp('[+*/\\-\\(\\)\\[\\]\\{\\} 0-9\\^]', 'g');
-    // this.varArray = exp
-    //   .replace(mathOperator, ' ')
-    //   .split(' ')
-    //   .filter(v => v !== '')
-    //   .map(e => {
-    //     this.form.addControl(
-    //       e,
-    //       new FormControl(
-    //         e === 'pi' ? Math.PI : '',
-    //         Validators.compose([
-    //           Validators.required,
-    //           (control: AbstractControl) => this.onlyNumbers(control)
-    //         ])
-    //       )
-    //     );
-    //     return e;
-    //   });
     this.varArray = this.expr
       .parse(exp)
       .variables()
@@ -85,18 +66,8 @@ export class CalcComponent implements OnInit {
       });
   }
 
-  calculate(scope) {
-    // this.result = evaluate(scope.displayExp, scope);
-    const expr = new Parser();
-    const some = expr.parse(scope.displayExp);
-    console.log(some.variables());
-    this.result = Parser.evaluate(scope.displayExp, scope);
-  }
-
   submit() {
-    // console.log('submitting');
-    // console.log(this.form.value);
-    this.calculate(this.form.value);
+    this.result = this.expr.evaluate(this.form.value.displayExp, this.form.value);
   }
 
   onlyNumbers(control: AbstractControl): ValidationErrors | null {
