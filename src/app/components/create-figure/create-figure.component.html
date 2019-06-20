@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Figure Name</label>
+      <ng-select
+        [items]="figures"
+        [addTag]="addTag"
+        [hideSelected]="true"
+        bindLabel="name"
+        formControlName="fName"
+      >
+        <ng-template ng-tag-tmp let-search="searchTerm">
+          Create new figure: {{ search }}
+        </ng-template>
+      </ng-select>
+      <small>Pick figure from list or add new</small>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Calculation Type</label>
+      <input type="text" formControlName="cType" class="form-control" />
+    </div>
+    <div class="form-group col-md-4">
+      <label>Expression</label>
+      <input type="text" formControlName="exp" class="form-control" />
+      <small>Please separate symbols, brackets and operations by spaces</small>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+    Submit
+  </button>
+</form>
