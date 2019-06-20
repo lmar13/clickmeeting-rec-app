@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUri: 'https://clickmeeting-rec-app.herokuapp.com/'
+  apiBaseUri: 'https://clickmeeting-rec-app.herokuapp.com'
 };
