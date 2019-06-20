@@ -17,8 +17,8 @@ export class CreateFigureComponent implements OnInit {
   constructor(private dataService: DataService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.dataService.getFigures().subscribe(figures => this.figures = figures.map(f => ({
-      name: f,
+    this.dataService.get().subscribe(figures => this.figures = figures.map(f => ({
+      name: f.figure,
       tag: false,
     })));
     this.form = this.fb.group({
