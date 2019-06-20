@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import DataJson from '../../assets/data/figures.json';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { EnvironmentProviderService } from '../core/environment-provider.service.js';
 
@@ -30,20 +29,12 @@ export class DataService {
     this.baseUrl = envProvider.current.apiBaseUri;
   }
 
-  getAll(): Observable<Figure[]> {
-    return of(DataJson as Figure[]);
-  }
-
-  getFigures(): Observable<string[]> {
-    return of(DataJson.map(f => f.figure));
+  get(): Observable<Figure[]> {
+    return this.httpClient.get<Figure[]>(`${this.baseUrl}/figure`);
   }
 
   getFigure(figure: string): Observable<Figure> {
-    return of(DataJson.find(f => f.figure === figure) as Figure);
-  }
-
-  getCalcTypesForFigure(figure: string): Observable<CalcType[]> {
-    return of(DataJson.find(f => f.figure === figure).calc as CalcType[]);
+    return this.httpClient.get<Figure>(`${this.baseUrl}/figure/${figure}`);
   }
 
   addFigure(figure: Figure): Observable<Figure> {

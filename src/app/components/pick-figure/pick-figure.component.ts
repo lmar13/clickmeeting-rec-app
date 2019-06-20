@@ -1,3 +1,4 @@
+import { Figure } from './../../shared/data.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CalcType, DataService } from 'src/app/shared/data.service';
@@ -11,6 +12,7 @@ import { Router, ActivatedRoute} from '@angular/router';
 export class PickFigureComponent implements OnInit {
   form: FormGroup;
   figures = [] as string[];
+  figuresArray = [] as Figure[];
   calcType = [] as CalcType[];
   showCalcType = false;
 
@@ -35,8 +37,9 @@ export class PickFigureComponent implements OnInit {
   }
 
   fetchData() {
-    this.dataService.getFigures().subscribe(figures => {
-      this.figures = figures;
+    this.dataService.get().subscribe(figures => {
+      this.figuresArray = figures;
+      this.figures = figures.map(f => f.figure);
     });
   }
 
@@ -46,10 +49,8 @@ export class PickFigureComponent implements OnInit {
 
       // fetch data for specified figure to get its own calculation type + show component
       if (figure) {
-        this.dataService.getCalcTypesForFigure(figure).subscribe(calc => {
-          this.calcType = calc;
-          this.showCalcType = true;
-        });
+        this.calcType = this.figuresArray.find(f => f.figure === figure).calc as CalcType[];
+        this.showCalcType = true;
       }
 
       // when user choose two necessary field we can proceed to fetch expresion and calculate it
@@ -58,5 +59,4 @@ export class PickFigureComponent implements OnInit {
       }
     });
   }
-
 }

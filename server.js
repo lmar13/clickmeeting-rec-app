@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+const filePath = path.join(__dirname + "/src/assets/data/figures.json");
+
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + "/dist/clickmeeting-rec-app"));
 
@@ -18,69 +20,66 @@ app.use(
 );
 app.use(cors());
 
-app.get("/*", function(req, res) {
-  res.sendFile(path.join(__dirname + "/dist/clickmeeting-rec-app/index.html"));
+app.get("/figure", function(req, res) {
+  fs.readFile(filePath, "utf8", function(err, file) {
+    res.status(200).json(JSON.parse(file));
+  });
+});
+
+app.get("/figure/:figure", function(req, res) {
+  const figure = req.params.figure;
+  fs.readFile(filePath, "utf8", function(err, file) {
+    file = JSON.parse(file);
+    res.status(200).json(file.find(f => f.figure === figure));
+  });
 });
 
 app.post("/figure", function(req, res) {
   const val = req.body;
 
-  fs.readFile(
-    path.join(__dirname + "/src/assets/data/figures.json"),
-    "utf8",
-    function(err, file) {
-      file = JSON.parse(file);
-      file.push({
-        figure: val.fName.name,
-        calc: [
-          {
-            type: val.cType,
-            exp: val.exp
-          }
-        ]
-      });
-
-      fs.writeFile(
-        path.join(__dirname + "/src/assets/data/figures.json"),
-        JSON.stringify(file),
-        function(err) {
-          res.status(200).json(file);
+  fs.readFile(filePath, "utf8", function(err, file) {
+    file = JSON.parse(file);
+    file.push({
+      figure: val.fName.name,
+      calc: [
+        {
+          type: val.cType,
+          exp: val.exp
         }
-      );
-    }
-  );
+      ]
+    });
+
+    fs.writeFile(filePath, JSON.stringify(file), function(err) {
+        res.status(200).json(file);
+    });
+  });
 });
 
 app.put("/figure", function(req, res) {
   const val = req.body;
 
-  fs.readFile(
-    path.join(__dirname + "/src/assets/data/figures.json"),
-    "utf8",
-    function(err, file) {
-      file = JSON.parse(file);
+  fs.readFile(filePath, "utf8", function(err, file) {
+    file = JSON.parse(file);
 
-      file = file.map(f => {
-        if (f.figure === val.fName.name) {
-          f.calc.push({
-            type: val.cType,
-            exp: val.exp
-          });
-        }
-        return f;
-      });
+    file = file.map(f => {
+      if (f.figure === val.fName.name) {
+        f.calc.push({
+          type: val.cType,
+          exp: val.exp
+        });
+      }
+      return f;
+    });
 
-      fs.writeFile(
-        path.join(__dirname + "/src/assets/data/figures.json"),
-        JSON.stringify(file),
-        function(err) {
-          res.status(200).json(file);
-        }
-      );
-    }
-  );
+    fs.writeFile(filePath, JSON.stringify(file), function(err) {
+        res.status(200).json(file);
+    });
+  });
 });
 
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname + "/dist/clickmeeting-rec-app/index.html"));
+});
 // Start the app by listening on the default Heroku port
 var server = app.listen(process.env.PORT || 3000, function() {
   var host = server.address().address;
