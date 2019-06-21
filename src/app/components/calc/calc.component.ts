@@ -12,9 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 import { CalcType, DataService } from './../../shared/data.service';
 import { Parser } from 'expr-eval';
 
-// TODO: create file constant.json, constant which user can input in expression will be kept
-// TODO: add handling constant from file
-
 @Component({
   selector: 'app-calc',
   templateUrl: './calc.component.html',
