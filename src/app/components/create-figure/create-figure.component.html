@@ -1,3 +1,12 @@
+<div class="alert alert-info" role="alert" *ngIf="loading">
+  <strong>Info</strong> We are saving figure, please wait...
+</div>
+<div class="alert alert-danger" role="alert" *ngIf="error && submitted && !loading">
+  <strong>Error!</strong> We are unable to add new figure. Please try again later.
+</div>
+<div class="alert alert-success" role="alert" *ngIf="!error && submitted && !loading">
+  <strong>Success!</strong> Figure saved successfully
+</div>
 <form [formGroup]="form" (ngSubmit)="submit()">
   <div class="form-row">
     <div class="form-group col-md-4">
@@ -18,13 +27,13 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-4">
-      <label>Calculation Type</label>
+      <label>Calculation Name</label>
       <input type="text" formControlName="cType" class="form-control" />
     </div>
     <div class="form-group col-md-4">
       <label>Expression</label>
       <input type="text" formControlName="exp" class="form-control" />
-      <small>Please separate symbols, brackets and operations by spaces</small>
+      <!-- <small>Please separate symbols, brackets and operations by spaces</small> -->
     </div>
   </div>
   <button type="submit" class="btn btn-primary" [disabled]="!form.valid">

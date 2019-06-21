@@ -14,17 +14,24 @@ export class CreateFigureComponent implements OnInit {
     tag: boolean;
   }[];
 
-  constructor(private dataService: DataService, private fb: FormBuilder) { }
+  loading = false;
+  submitted = false;
+  error = false;
+
+  constructor(private dataService: DataService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.dataService.get().subscribe(figures => this.figures = figures.map(f => ({
-      name: f.figure,
-      tag: false,
-    })));
+    this.dataService.get().subscribe(
+      figures =>
+        (this.figures = figures.map(f => ({
+          name: f.figure,
+          tag: false
+        })))
+    );
     this.form = this.fb.group({
       fName: ['', Validators.required],
       cType: ['', Validators.required],
-      exp: ['', Validators.required],
+      exp: ['', Validators.required]
     });
   }
 
@@ -33,11 +40,31 @@ export class CreateFigureComponent implements OnInit {
   }
 
   addNew(value) {
-    this.dataService.addFigure(value).subscribe(res => console.log(res));
+    this.dataService.addFigure(value).subscribe(res => {
+      this.loading = false;
+      this.error = res ? false : true;
+      if (res) {
+        this.figures = res.map(f => ({
+          name: f.figure,
+          tag: false
+        }));
+        this.form.reset();
+      }
+    });
   }
 
   update(value) {
-    this.dataService.updateFigure(value).subscribe(res => console.log(res));
+    this.dataService.updateFigure(value).subscribe(res => {
+      this.loading = false;
+      this.error = res ? false : true;
+      if (res) {
+        this.figures = res.map(f => ({
+          name: f.figure,
+          tag: false
+        }));
+        this.form.reset();
+      }
+    });
   }
 
   submit() {
@@ -45,8 +72,11 @@ export class CreateFigureComponent implements OnInit {
 
     // const newExp = exp.split('').filter(v => v !== ' ').join(' ');
     // console.log(newExp);
+    this.submitted = true;
+    this.loading = true;
 
-    fName.tag ? this.addNew({ fName, cType, exp }) : this.update({ fName, cType, exp });
+    fName.tag
+      ? this.addNew({ fName, cType, exp })
+      : this.update({ fName, cType, exp });
   }
-
 }

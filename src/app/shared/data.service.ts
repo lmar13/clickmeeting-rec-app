@@ -37,25 +37,25 @@ export class DataService {
     return this.httpClient.get<Figure>(`${this.baseUrl}/figure/${figure}`);
   }
 
-  addFigure(figure: Figure): Observable<Figure> {
-    return this.httpClient.post<Figure>(`${this.baseUrl}/figure`, figure)
+  addFigure(figure: Figure): Observable<Figure[]> {
+    return this.httpClient.post<Figure[]>(`${this.baseUrl}/figure`, figure)
       .pipe(
         catchError(err => {
           console.log(err);
           throw err;
         }),
-        map(value => value as Figure)
+        map(value => value as Figure[])
       );
   }
 
-  updateFigure(figure: Figure): Observable<Figure> {
-    return this.httpClient.put<Figure>(`${this.baseUrl}/figure`, figure)
+  updateFigure(figure: Figure): Observable<Figure[]> {
+    return this.httpClient.put<Figure[]>(`${this.baseUrl}/figure`, figure)
       .pipe(
         catchError(err => {
           console.log(err);
           throw err;
         }),
-        map(value => value as Figure)
+        map(value => value as Figure[])
       );
   }
 }
