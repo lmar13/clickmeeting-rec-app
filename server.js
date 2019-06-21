@@ -22,6 +22,7 @@ app.use(cors());
 
 app.get("/figure", function(req, res) {
   fs.readFile(filePath, "utf8", function(err, file) {
+    if (err) return res.status(500).json({ err });
     res.status(200).json(JSON.parse(file));
   });
 });
@@ -29,6 +30,7 @@ app.get("/figure", function(req, res) {
 app.get("/figure/:figure", function(req, res) {
   const figure = req.params.figure;
   fs.readFile(filePath, "utf8", function(err, file) {
+    if (err) return res.status(500).json({ err });
     file = JSON.parse(file);
     res.status(200).json(file.find(f => f.figure === figure));
   });
@@ -38,6 +40,7 @@ app.post("/figure", function(req, res) {
   const val = req.body;
 
   fs.readFile(filePath, "utf8", function(err, file) {
+    if (err) return res.status(500).json({ err: 'Error with reading file' });
     file = JSON.parse(file);
     file.push({
       figure: val.fName.name,
@@ -49,8 +52,9 @@ app.post("/figure", function(req, res) {
       ]
     });
 
-    fs.writeFile(filePath, JSON.stringify(file), function(err) {
-        res.status(200).json(file);
+    fs.writeFile(filePath, JSON.stringify(file), function(error) {
+      if (error) return res.status(500).json({ err: 'Error with writing file' });
+      res.status(200).json(file);
     });
   });
 });
@@ -59,6 +63,8 @@ app.put("/figure", function(req, res) {
   const val = req.body;
 
   fs.readFile(filePath, "utf8", function(err, file) {
+    if (err) return res.status(500).json({ err: 'Error with reading file' });
+
     file = JSON.parse(file);
 
     file = file.map(f => {
@@ -71,8 +77,9 @@ app.put("/figure", function(req, res) {
       return f;
     });
 
-    fs.writeFile(filePath, JSON.stringify(file), function(err) {
-        res.status(200).json(file);
+    fs.writeFile(filePath, JSON.stringify(file), function(error) {
+      if (error) return res.status(500).json({ err: 'Error with writing file' });
+      res.status(200).json(file);
     });
   });
 });
