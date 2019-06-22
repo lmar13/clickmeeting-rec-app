@@ -3,12 +3,12 @@
     "figure": "circle",
     "calc": [
       {
-        "type": "circuit",
-        "exp": "test"
+        "type": "circiut",
+        "exp": "(2 * pi * r)"
       },
       {
         "type": "field",
-        "exp": "test"
+        "exp": "pi * r ^ 2"
       }
     ]
   },
@@ -16,12 +16,12 @@
     "figure": "square",
     "calc": [
       {
-        "type": "circuit",
-        "exp": "test"
+        "type": "circiut",
+        "exp": "4 * a"
       },
       {
         "type": "field",
-        "exp": "test"
+        "exp": "a ^ 2"
       }
     ]
   },
@@ -29,12 +29,12 @@
     "figure": "rectangle",
     "calc": [
       {
-        "type": "circuit",
-        "exp": "test"
+        "type": "circiut",
+        "exp": "2*a + 2*b"
       },
       {
         "type": "field",
-        "exp": "test"
+        "exp": "a * b"
       }
     ]
   }

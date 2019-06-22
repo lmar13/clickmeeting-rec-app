@@ -1,0 +1,13 @@
+<nav>
+  <div class="container">
+    <div class="row align-item-center">
+      <div class="col">
+        <ul class="nav">
+          <li class="nav-item" *ngFor="let link of links" routerLinkActive="active">
+            <a class="nav-link" [routerLink]="link.link" >{{link.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
