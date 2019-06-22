@@ -1,6 +1,7 @@
 import { DataService } from 'src/app/shared/data.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Parser } from 'expr-eval';
 
 @Component({
   selector: 'app-create-figure',
@@ -18,7 +19,9 @@ export class CreateFigureComponent implements OnInit {
   submitted = false;
   error = false;
 
-  constructor(private dataService: DataService, private fb: FormBuilder) {}
+  expr = new Parser();
+
+  constructor(private dataService: DataService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.dataService.get().subscribe(
@@ -31,7 +34,8 @@ export class CreateFigureComponent implements OnInit {
     this.form = this.fb.group({
       fName: ['', Validators.required],
       cType: ['', Validators.required],
-      exp: ['', Validators.required]
+      exp: ['',
+        (control: AbstractControl) => this.validateExpression(control)]
     });
   }
 
@@ -70,13 +74,23 @@ export class CreateFigureComponent implements OnInit {
   submit() {
     const { fName, cType, exp } = this.form.value;
 
-    // const newExp = exp.split('').filter(v => v !== ' ').join(' ');
-    // console.log(newExp);
     this.submitted = true;
     this.loading = true;
 
     fName.tag
       ? this.addNew({ fName, cType, exp })
       : this.update({ fName, cType, exp });
+  }
+
+  validateExpression(control: AbstractControl): ValidationErrors | null {
+    const val = control.value;
+    let error = null;
+
+    try {
+      this.expr.parse(val);
+    } catch (err) {
+      error = { isNotExp: true };
+    }
+    return error;
   }
 }
