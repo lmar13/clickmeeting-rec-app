@@ -1,51 +1,59 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <div class="form-row">
+<div class="alert alert-danger" role="alert" *ngIf="exprError">
+  <strong>Error!</strong> There was an error with parsing expression, please try
+  again or choose another one
+</div>
+<ng-container *ngIf="!exprError">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="expression">Expression</label>
+        <input
+          type="text"
+          class="form-control"
+          id="expression"
+          readonly
+          formControlName="displayExp"
+        />
+      </div>
+    </div>
+    <p class="mt-2">Variables</p>
+    <div class="form-row mb-2" style="min-height: 95px">
+      <div class="form-group col-md-4" *ngFor="let v of varArray">
+        <label for="var-{{ v }}">{{ v }}</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="{{ v }}"
+          id="var-{{ v }}"
+          [readOnly]="v === 'pi'"
+        />
+        <div *ngIf="!form.controls[v].valid && form.controls[v].dirty">
+          <small
+            *ngIf="form.controls[v].hasError('required')"
+            class="text-danger"
+            >Field is required!</small
+          >
+          <small *ngIf="form.controls[v].hasError('isNaN')" class="text-danger"
+            >Input needs to be a number</small
+          >
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+      Calculate
+    </button>
+  </form>
+
+  <div class="form-row mt-4">
     <div class="form-group col-md-4">
-      <label for="expression">Expression</label>
+      <label for="expression">Result</label>
       <input
         type="text"
         class="form-control"
         id="expression"
         readonly
-        formControlName="displayExp"
+        [(ngModel)]="result"
       />
     </div>
   </div>
-  <p class="mt-2">Variables</p>
-  <div class="form-row mb-2" style="min-height: 95px">
-    <div class="form-group col-md-4" *ngFor="let v of varArray">
-      <label for="var-{{ v }}">{{ v }}</label>
-      <input
-        type="text"
-        class="form-control"
-        formControlName="{{ v }}"
-        id="var-{{ v }}"
-        [readOnly]="v === 'pi'"
-      />
-      <div *ngIf="!form.controls[v].valid && form.controls[v].dirty">
-        <small *ngIf="form.controls[v].hasError('required')" class="text-danger"
-          >Field is required!</small
-        >
-        <small *ngIf="form.controls[v].hasError('isNaN')" class="text-danger"
-          >Input needs to be a number</small
-        >
-      </div>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
-    Calculate
-  </button>
-</form>
-
-<div class="form-row mt-4">
-  <div class="form-group col-md-4">
-    <label for="expression">Result</label>
-    <input
-      type="text"
-      class="form-control"
-      id="expression"
-      readonly
-      [(ngModel)]="result"
-    />
-  </div>
-</div>
+</ng-container>

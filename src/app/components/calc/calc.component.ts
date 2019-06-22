@@ -22,6 +22,7 @@ export class CalcComponent implements OnInit {
   varArray = null;
   result = null;
   expr = new Parser();
+  exprError = false;
 
   form: FormGroup;
 
@@ -29,38 +30,45 @@ export class CalcComponent implements OnInit {
     private dataService: DataService,
     private route: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.dataService.getFigure(params.figure).subscribe(fig => {
         this.exp =
           fig.calc.find(c => c.type === params.calcType) || ({} as CalcType);
-        this.form = this.fb.group({
-          displayExp: [this.exp.exp]
-        });
+        this.form.get('displayExp').setValue(this.exp.exp);
         this.examineExp(this.exp.exp);
       });
+    });
+
+    this.form = this.fb.group({
+      displayExp: ['']
     });
   }
 
   examineExp(exp: string) {
-    this.varArray = this.expr
-      .parse(exp)
-      .variables()
-      .map(e => {
-        this.form.addControl(
-          e,
-          new FormControl(
-            e === 'pi' ? Math.PI : '',
-            Validators.compose([
-              Validators.required,
-              (control: AbstractControl) => this.onlyNumbers(control)
-            ])
-          )
-        );
-        return e;
-      });
+    try {
+      this.varArray = this.expr
+        .parse(exp)
+        .variables()
+        .map(e => {
+          this.form.addControl(
+            e,
+            new FormControl(
+              e === 'pi' ? Math.PI : '',
+              Validators.compose([
+                Validators.required,
+                (control: AbstractControl) => this.onlyNumbers(control)
+              ])
+            )
+          );
+          return e;
+        });
+      this.exprError = false;
+    } catch (error) {
+      this.exprError = true;
+    }
   }
 
   submit() {
