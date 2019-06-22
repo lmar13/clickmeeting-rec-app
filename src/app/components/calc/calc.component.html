@@ -16,6 +16,7 @@
         />
       </div>
     </div>
+    <ng-container *ngIf="!noVar">
     <p class="mt-2">Variables</p>
     <div class="form-row mb-2" style="min-height: 95px">
       <div class="form-group col-md-4" *ngFor="let v of varArray">
@@ -42,6 +43,7 @@
     <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
       Calculate
     </button>
+    </ng-container>
   </form>
 
   <div class="form-row mt-4">

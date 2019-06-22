@@ -23,6 +23,7 @@ export class CalcComponent implements OnInit {
   result = null;
   expr = new Parser();
   exprError = false;
+  noVar = false;
 
   form: FormGroup;
 
@@ -35,6 +36,7 @@ export class CalcComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.dataService.getFigure(params.figure).subscribe(fig => {
+        this.result = null;
         this.exp =
           fig.calc.find(c => c.type === params.calcType) || ({} as CalcType);
         this.form.get('displayExp').setValue(this.exp.exp);
@@ -66,6 +68,13 @@ export class CalcComponent implements OnInit {
           return e;
         });
       this.exprError = false;
+
+      if (this.varArray.length <= 0) {
+        this.submit();
+        this.noVar = true;
+      } else {
+        this.noVar = false;
+      }
     } catch (error) {
       this.exprError = true;
     }
