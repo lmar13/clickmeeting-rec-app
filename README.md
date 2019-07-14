@@ -1,6 +1,6 @@
 # ClickMeeting Recruitment App
 
-Project was to develop small web application according to provided instructions. It should count circiut and field of three figures (cirlce, square and rectangle), it should be developed to give abilty to add new figures and caluculation types. 
+Project was to develop small web application according to provided instructions. It should count circiut and field of three figures (cirlce, square and rectangle), it should be developed to give ability to add new figures and caluculation types. 
 
 As it was mentioned in requirements I have used the newest Angular framework to build front part of application. I have used some additional libraries and components to style page (bootstrap) and to automate parsing and evaluating math expressions.
 
